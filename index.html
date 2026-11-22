@@ -77,7 +77,6 @@
       color: #1f2225;
     }
 
-
     .header-actions {
       display: flex;
       align-items: center;
@@ -160,7 +159,6 @@
       margin-bottom: 14px;
     }
 
-    /* Выделенные заголовки главных блоков */
     .section-title {
       font-size: 14px;
       text-transform: uppercase;
@@ -177,7 +175,6 @@
       align-items: center;
     }
 
-    /* Выделенные подзаголовки внутри блоков */
     .sub-label {
       display: inline-block;
       font-size: 12.5px;
@@ -522,11 +519,11 @@
       transform: scale(0.99);
     }
 
-    /* Archive Styles & Before/After Collage */
+    /* Prompt Archive Styles */
     .archive-actions {
       display: flex;
       gap: 8px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
@@ -553,10 +550,69 @@
       cursor: pointer;
     }
 
+    /* Фильтр категорий в Промт Архиве */
+    .archive-filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      scrollbar-width: none;
+    }
+    .archive-filter-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-chip-editable {
+      display: inline-flex;
+      align-items: center;
+      background-color: var(--bg-chip);
+      color: var(--text-main);
+      border: 1px solid transparent;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: 0.15s;
+    }
+    .cat-chip-editable.active {
+      background-color: var(--bg-chip-active);
+      color: #fff;
+      border-color: #9ec2b3;
+      font-weight: 600;
+    }
+    .cat-chip-main {
+      padding: 6px 10px 6px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .cat-chip-del {
+      background: none;
+      border: none;
+      color: inherit;
+      opacity: 0.7;
+      padding: 6px 10px 6px 2px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .cat-chip-del:hover {
+      opacity: 1;
+      color: #ffb3b3;
+    }
+
+    .inline-add-cat {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .inline-add-cat input[type="text"] {
+      padding: 8px 10px;
+      font-size: 13px;
+    }
+
     .archive-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 14px;
+      gap: 12px;
     }
 
     .archive-card {
@@ -569,7 +625,7 @@
     .card-img-wrap {
       position: relative;
       background-color: #202326;
-      height: 240px;
+      height: 200px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -578,7 +634,7 @@
 
     .card-img-wrap img.single-img {
       width: 100%;
-      height: 240px;
+      height: 200px;
       object-fit: cover;
       display: block;
     }
@@ -587,7 +643,7 @@
     .ba-collage {
       display: flex;
       width: 100%;
-      height: 240px;
+      height: 200px;
       gap: 2px;
       background-color: #181a1c;
     }
@@ -643,6 +699,13 @@
       pointer-events: none;
     }
 
+    .card-badges-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
     .badge {
       background-color: rgba(32, 35, 38, 0.85);
       color: #e6e4df;
@@ -653,25 +716,83 @@
       font-weight: 600;
     }
 
+    .badge-cat {
+      background-color: rgba(104, 134, 122, 0.92);
+      color: #ffffff;
+      border: 1px solid #9ec2b3;
+    }
+
     .card-body {
-      padding: 13px;
+      padding: 12px 13px;
+    }
+
+    .card-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
     .card-title {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15.5px;
       color: var(--accent-hover);
-      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    /* Компактный блок промта с копированием в 1 касание */
+    .card-prompt-box {
+      background-color: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s, background-color 0.15s;
+    }
+
+    .card-prompt-box:active {
+      border-color: var(--accent);
+      background-color: #1c1f22;
     }
 
     .card-prompt-preview {
       font-size: 12.5px;
-      color: var(--text-muted);
+      color: #d6d4ce;
+      line-height: 1.42;
+      white-space: pre-line;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-bottom: 12px;
+    }
+
+    .card-prompt-preview.expanded {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+    }
+
+    .card-prompt-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 5px;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .expand-link {
+      background: none;
+      border: none;
+      color: var(--accent-warm);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 2px 4px;
+      cursor: pointer;
     }
 
     .card-footer {
@@ -873,7 +994,7 @@
 
   <div class="tabs">
     <button class="tab-btn active" id="tabConstructor" onclick="switchTab('constructor')">🎛️ Студийный пульт</button>
-    <button class="tab-btn" id="tabArchive" onclick="switchTab('archive')">🖼️ Визуальный архив</button>
+    <button class="tab-btn" id="tabArchive" onclick="switchTab('archive')">🗂️ Промт Архив</button>
   </div>
 
   <div id="toast" class="toast">Готово!</div>
@@ -1036,17 +1157,20 @@
 
   </div>
 
-  <!-- TAB 2: VISUAL ARCHIVE -->
+  <!-- TAB 2: PROMPT ARCHIVE -->
   <div id="viewArchive" class="container hidden">
     <div class="archive-actions">
-      <button class="btn-primary" onclick="openCreateCardModal()">➕ Сохранить результат</button>
-      <button class="btn-secondary" onclick="exportBackup()">💾 Копия (Скачать)</button>
+      <button class="btn-primary" onclick="openCreateCardModal()">➕ Добавить Промт</button>
+      <button class="btn-secondary" onclick="exportBackup()">💾 Копия</button>
       <button class="btn-secondary" onclick="document.getElementById('importFile').click()">📂 Восстановить</button>
       <input type="file" id="importFile" accept=".json" class="hidden" onchange="importBackup(event)" />
     </div>
 
-    <div id="archiveEmpty" class="section" style="text-align: center; color: var(--text-muted); padding: 30px 16px;">
-      Пока в архиве пусто.<br><br>Сгенерируй красивое фото в Gemini и нажми <b>«➕ Сохранить результат»</b>, чтобы собрать свою галерею «До / После» и удачных промптов!
+    <!-- Фильтр по категориям промтов -->
+    <div class="archive-filter-bar" id="archiveCategoryFilter"></div>
+
+    <div id="archiveEmpty" class="section" style="text-align: center; color: var(--text-muted); padding: 28px 16px;">
+      В этой категории пока нет сохранённых промптов.<br><br>Нажми <b>«➕ Добавить Промт»</b>, чтобы сохранить удачный промпт (с фото или без него)!
     </div>
 
     <div class="archive-grid" id="archiveGrid"></div>
@@ -1066,37 +1190,51 @@
     </div>
   </div>
 
-  <!-- MODAL: ADD / EDIT CARD IN ARCHIVE -->
+  <!-- MODAL: ADD / EDIT PROMPT IN ARCHIVE -->
   <div class="modal-backdrop" id="cardModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h2 id="cardModalTitle">Сохранить в архив</h2>
+        <h2 id="cardModalTitle">Добавить промт в архив</h2>
         <button class="close-modal" onclick="closeModal('cardModal')">✕</button>
       </div>
-      
-      <div class="upload-grid">
-        <div class="upload-box">
-          <label>1. Фото ДО (необязательно)</label>
-          <img id="editBeforePreview" class="edit-thumb-preview hidden" alt="До" />
-          <input type="file" id="cardBeforeInput" accept="image/*" />
-          <button type="button" id="removeBeforeBtn" class="mini-btn hidden" style="margin-top: 6px; width: 100%; color: #e29595;" onclick="clearEditBefore()">✕ Убрать фото ДО</button>
-        </div>
-        <div class="upload-box" style="border-color: var(--accent);">
-          <label style="color: var(--accent-hover);">2. Фото ПОСЛЕ (результат)*</label>
-          <img id="editAfterPreview" class="edit-thumb-preview hidden" alt="После" />
-          <input type="file" id="cardAfterInput" accept="image/*" />
+
+      <!-- Выбор и управление категориями промтов -->
+      <div style="margin-bottom: 12px;">
+        <div class="sub-label" style="margin-top: 0;">1. Категория промта (нажми ✕ на теге, чтобы удалить):</div>
+        <div class="chips-wrap" id="modalCategoryChips"></div>
+        <div class="inline-add-cat">
+          <input type="text" id="newPromptCatInput" maxlength="24" placeholder="Новая категория (например: Интерьер)..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addPromptCategoryFromInput();}" />
+          <button type="button" class="btn-secondary" style="white-space: nowrap; padding: 8px 12px;" onclick="addPromptCategoryFromInput()">+ Добавить</button>
         </div>
       </div>
 
       <div style="margin-bottom: 12px;">
-        <div class="sub-label" style="margin-top: 0;">3. Название или заметка:</div>
+        <div class="sub-label" style="margin-top: 0;">2. Название или заметка:</div>
         <input type="text" id="cardTitleInput" placeholder="Например: Карточка сумки с инфографикой" />
       </div>
-      <div style="margin-bottom: 14px;">
-        <div class="sub-label" style="margin-top: 0;">4. Текст промпта:</div>
-        <textarea id="cardPromptInput" style="height: 120px; font-size: 13px;"></textarea>
+
+      <div style="margin-bottom: 12px;">
+        <div class="sub-label" style="margin-top: 0;">3. Текст промпта*:</div>
+        <textarea id="cardPromptInput" style="height: 125px; font-size: 13px;" placeholder="Вставьте или отредактируйте текст промпта..."></textarea>
       </div>
-      <button class="copy-main-btn" id="saveCardBtn" onclick="saveCardFromModal()">💾 Сохранить карточку</button>
+      
+      <div class="sub-label" style="margin-top: 0;">4. Прикрепить фото (необязательно):</div>
+      <div class="upload-grid">
+        <div class="upload-box">
+          <label>Фото ДО (необязательно)</label>
+          <img id="editBeforePreview" class="edit-thumb-preview hidden" alt="До" />
+          <input type="file" id="cardBeforeInput" accept="image/*" />
+          <button type="button" id="removeBeforeBtn" class="mini-btn hidden" style="margin-top: 6px; width: 100%; color: #e29595;" onclick="clearEditBefore()">✕ Убрать фото ДО</button>
+        </div>
+        <div class="upload-box">
+          <label>Фото ПОСЛЕ (необязательно)</label>
+          <img id="editAfterPreview" class="edit-thumb-preview hidden" alt="После" />
+          <input type="file" id="cardAfterInput" accept="image/*" />
+          <button type="button" id="removeAfterBtn" class="mini-btn hidden" style="margin-top: 6px; width: 100%; color: #e29595;" onclick="clearEditAfter()">✕ Убрать фото ПОСЛЕ</button>
+        </div>
+      </div>
+
+      <button class="copy-main-btn" id="saveCardBtn" onclick="saveCardFromModal()">💾 Сохранить промт</button>
     </div>
   </div>
 
@@ -1233,23 +1371,23 @@
         </div>
       </div>
 
-      <!-- БЛОК 4: ВИЗУАЛЬНЫЙ АРХИВ -->
+      <!-- БЛОК 4: ПРОМТ АРХИВ -->
       <div class="guide-block warm">
-        <div class="guide-block-header">🖼️ 4. Визуальный архив</div>
+        <div class="guide-block-header">🗂️ 4. Промт Архив</div>
 
         <div class="guide-item">
-          <span class="guide-item-title">Коллаж «До / После» 50/50</span>
-          <p class="guide-item-text">При сохранении результата можно загрузить два фото — исходный снимок («До») и результат из Gemini («После»). Они объединятся в коллаж бок о бок. Если загрузить только «После», фото откроется во всю ширину.</p>
+          <span class="guide-item-title">Сохранение промтов с фото или без фото</span>
+          <p class="guide-item-text">Нажми «➕ Добавить Промт» — можно сохранить только текст промта с названием и категорией, а при желании прикрепить фото «До» и «После» для коллажа 50/50.</p>
         </div>
 
         <div class="guide-item">
-          <span class="guide-item-title">Редактирование и копирование карточек</span>
-          <p class="guide-item-text">На каждой карточке есть кнопка <b>«✏️ Изменить»</b> (позволяет поправить название, текст промпта, заменить фото «До» или «После») и <b>«📋 Промпт»</b> (копирует формулу в один тап).</p>
+          <span class="guide-item-title">Категории, компактные карточки и копирование в 1 касание</span>
+          <p class="guide-item-text">Создавай и удаляй свои категории промтов, фильтруй список сверху. Длинные промты в карточках компактно свёрнуты, а при нажатии на сам текст или кнопку <b>«📋 Копировать»</b> промт мгновенно копируется в буфер обмена.</p>
         </div>
 
         <div class="guide-item">
-          <span class="guide-item-title">Авто-теги и Резервная копия</span>
-          <p class="guide-item-text">На карточки автоматически ставятся теги использованных настроек. Все данные хранятся локально в памяти браузера, а кнопка <b>«💾 Копия (Скачать)»</b> сохраняет весь архив с картинками в один файл для восстановления через <b>«📂 Восстановить»</b>.</p>
+          <span class="guide-item-title">Редактирование и Резервная копия</span>
+          <p class="guide-item-text">Любую запись можно изменить или удалить. Все данные хранятся локально в памяти браузера, а кнопка <b>«💾 Копия»</b> сохраняет весь архив с категориями и картинками в один файл для восстановления через <b>«📂 Восстановить»</b>.</p>
         </div>
       </div>
 
@@ -1257,6 +1395,14 @@
   </div>
 
   <script>
+    // Default Prompt Categories
+    const DEFAULT_PROMPT_CATEGORIES = [
+      { id: 'cat_products', label: '🛍️ Товары' },
+      { id: 'cat_portraits', label: '👤 Портреты' },
+      { id: 'cat_infographic', label: '📊 Инфографика' },
+      { id: 'cat_ideas', label: '✨ Идеи' }
+    ];
+
     // State
     let state = {
       studioMode: 'product', // 'product' | 'portrait'
@@ -1273,6 +1419,12 @@
       variationText: '',
       editingCardId: null,
       clearBeforeFlag: false,
+      clearAfterFlag: false,
+      activeArchiveFilter: 'all',
+      selectedModalCategory: 'cat_products',
+      expandedCards: {},
+      pendingDeleteId: null,
+      promptCategories: JSON.parse(localStorage.getItem('fs_prompt_categories') || 'null') || [...DEFAULT_PROMPT_CATEGORIES],
       savedProducts: JSON.parse(localStorage.getItem('fs_saved_products') || '["женская сумка", "зимние ботинки", "детская игрушка", "книга в твердом переплете"]'),
       savedPortraits: JSON.parse(localStorage.getItem('fs_saved_portraits') || '["женщина в уютном кашемировом свитере", "элегантный деловой образ в пиджаке", "прогулочный образ в тренче", "вечерний наряд"]')
     };
@@ -1484,6 +1636,7 @@
       renderSurfaces();
       renderInfoLayouts();
       applyStudioModeUI();
+      renderArchiveCategoryFilter();
       renderArchive();
     };
 
@@ -2009,18 +2162,26 @@
 
     function copyFinalPrompt() {
       const text = document.getElementById('finalPromptText').value;
-      navigator.clipboard.writeText(text).then(() => {
-        showToast('📋 Скопировано! Идем в Gemini');
-      }).catch(() => {
-        const ta = document.getElementById('finalPromptText');
-        document.getElementById('promptBox').classList.add('open');
-        ta.select();
-        document.execCommand('copy');
-        showToast('📋 Промпт скопирован!');
-      });
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('📋 Скопировано! Идем в Gemini');
+        }).catch(() => {
+          fallbackCopyMainPrompt();
+        });
+      } else {
+        fallbackCopyMainPrompt();
+      }
     }
 
-    // Modals & Archive Logic (Create + Edit)
+    function fallbackCopyMainPrompt() {
+      const ta = document.getElementById('finalPromptText');
+      document.getElementById('promptBox').classList.add('open');
+      ta.select();
+      document.execCommand('copy');
+      showToast('📋 Промпт скопирован!');
+    }
+
+    // Modals & Prompt Archive Logic (Create + Edit + Categories)
     function openModal(id) {
       document.getElementById(id).classList.add('open');
     }
@@ -2029,22 +2190,185 @@
       document.getElementById(id).classList.remove('open');
     }
 
+    function savePromptCategories() {
+      localStorage.setItem('fs_prompt_categories', JSON.stringify(state.promptCategories));
+    }
+
+    function getPromptCategoryLabel(catId) {
+      const found = state.promptCategories.find(c => c.id === catId);
+      return found ? found.label : (state.promptCategories[0]?.label || 'Без категории');
+    }
+
+    function addPromptCategoryFromInput() {
+      const input = document.getElementById('newPromptCatInput');
+      const label = input.value.trim();
+      if (!label) {
+        showToast('Впиши название категории');
+        return;
+      }
+      const existing = state.promptCategories.find(c => c.label.toLowerCase() === label.toLowerCase());
+      if (existing) {
+        state.selectedModalCategory = existing.id;
+        input.value = '';
+        renderModalCategoryChips();
+        showToast('Категория выбрана');
+        return;
+      }
+      const newCat = {
+        id: 'cat_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        label: label
+      };
+      state.promptCategories.push(newCat);
+      state.selectedModalCategory = newCat.id;
+      savePromptCategories();
+      input.value = '';
+      renderModalCategoryChips();
+      renderArchiveCategoryFilter();
+      showToast('✅ Категория добавлена');
+    }
+
+    function deletePromptCategory(catId) {
+      if (state.promptCategories.length <= 1) {
+        showToast('Должна остаться хотя бы одна категория');
+        return;
+      }
+      const idx = state.promptCategories.findIndex(c => c.id === catId);
+      if (idx === -1) return;
+
+      state.promptCategories.splice(idx, 1);
+      const fallbackId = state.promptCategories[0].id;
+
+      // Переносим записи удаленной категории в первую доступную
+      const archive = getArchive();
+      let changed = false;
+      archive.forEach(item => {
+        if (item.categoryId === catId) {
+          item.categoryId = fallbackId;
+          changed = true;
+        }
+      });
+      if (changed) {
+        localStorage.setItem('fs_visual_archive', JSON.stringify(archive));
+      }
+
+      if (state.selectedModalCategory === catId) {
+        state.selectedModalCategory = fallbackId;
+      }
+      if (state.activeArchiveFilter === catId) {
+        state.activeArchiveFilter = 'all';
+      }
+
+      savePromptCategories();
+      renderModalCategoryChips();
+      renderArchiveCategoryFilter();
+      renderArchive();
+      showToast('Категория удалена');
+    }
+
+    function renderModalCategoryChips() {
+      const wrap = document.getElementById('modalCategoryChips');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const canDelete = state.promptCategories.length > 1;
+
+      state.promptCategories.forEach(cat => {
+        const isSelected = state.selectedModalCategory === cat.id;
+        const el = document.createElement('div');
+        el.className = 'cat-chip-editable' + (isSelected ? ' active' : '');
+
+        const mainSpan = document.createElement('span');
+        mainSpan.className = 'cat-chip-main';
+        if (!canDelete) mainSpan.style.paddingRight = '12px';
+        mainSpan.textContent = cat.label;
+        mainSpan.onclick = () => {
+          state.selectedModalCategory = cat.id;
+          renderModalCategoryChips();
+        };
+        el.appendChild(mainSpan);
+
+        if (canDelete) {
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'cat-chip-del';
+          delBtn.title = 'Удалить категорию';
+          delBtn.textContent = '✕';
+          delBtn.onclick = (e) => {
+            e.stopPropagation();
+            deletePromptCategory(cat.id);
+          };
+          el.appendChild(delBtn);
+        }
+
+        wrap.appendChild(el);
+      });
+    }
+
+    function renderArchiveCategoryFilter() {
+      const bar = document.getElementById('archiveCategoryFilter');
+      if (!bar) return;
+      const list = getArchive();
+      bar.innerHTML = '';
+
+      const allChip = document.createElement('div');
+      allChip.className = 'chip' + (state.activeArchiveFilter === 'all' ? ' active' : '');
+      allChip.style.whiteSpace = 'nowrap';
+      allChip.textContent = `Все (${list.length})`;
+      allChip.onclick = () => {
+        state.activeArchiveFilter = 'all';
+        renderArchiveCategoryFilter();
+        renderArchive();
+      };
+      bar.appendChild(allChip);
+
+      state.promptCategories.forEach(cat => {
+        const count = list.filter(i => (i.categoryId || state.promptCategories[0]?.id) === cat.id).length;
+        const chip = document.createElement('div');
+        chip.className = 'chip' + (state.activeArchiveFilter === cat.id ? ' active' : '');
+        chip.style.whiteSpace = 'nowrap';
+        chip.textContent = `${cat.label} (${count})`;
+        chip.onclick = () => {
+          state.activeArchiveFilter = cat.id;
+          renderArchiveCategoryFilter();
+          renderArchive();
+        };
+        bar.appendChild(chip);
+      });
+    }
+
+    function getDefaultCategoryForCurrentMode() {
+      if (state.studioMode === 'portrait') {
+        const p = state.promptCategories.find(c => c.id === 'cat_portraits');
+        if (p) return p.id;
+      } else if (state.cardStyle === 'infographic') {
+        const inf = state.promptCategories.find(c => c.id === 'cat_infographic');
+        if (inf) return inf.id;
+      }
+      return state.promptCategories[0]?.id || 'cat_products';
+    }
+
     function openCreateCardModal() {
       state.editingCardId = null;
       state.clearBeforeFlag = false;
+      state.clearAfterFlag = false;
+      state.selectedModalCategory = state.activeArchiveFilter !== 'all'
+        ? state.activeArchiveFilter
+        : getDefaultCategoryForCurrentMode();
 
-      document.getElementById('cardModalTitle').textContent = 'Сохранить в архив';
-      document.getElementById('saveCardBtn').textContent = '💾 Сохранить карточку';
+      document.getElementById('cardModalTitle').textContent = '➕ Добавить промт в архив';
+      document.getElementById('saveCardBtn').textContent = '💾 Сохранить промт';
 
       document.getElementById('editBeforePreview').classList.add('hidden');
       document.getElementById('editAfterPreview').classList.add('hidden');
       document.getElementById('removeBeforeBtn').classList.add('hidden');
+      document.getElementById('removeAfterBtn').classList.add('hidden');
 
       document.getElementById('cardBeforeInput').value = '';
       document.getElementById('cardAfterInput').value = '';
-      document.getElementById('cardPromptInput').value = document.getElementById('finalPromptText').value;
-      document.getElementById('cardTitleInput').value = document.getElementById('subjectInput').value.trim();
+      document.getElementById('newPromptCatInput').value = '';
+      document.getElementById('cardPromptInput').value = '';
+      document.getElementById('cardTitleInput').value = '';
 
+      renderModalCategoryChips();
       openModal('cardModal');
     }
 
@@ -2054,12 +2378,16 @@
 
       state.editingCardId = id;
       state.clearBeforeFlag = false;
+      state.clearAfterFlag = false;
+      const catExists = state.promptCategories.some(c => c.id === item.categoryId);
+      state.selectedModalCategory = catExists ? item.categoryId : (state.promptCategories[0]?.id || 'cat_products');
 
-      document.getElementById('cardModalTitle').textContent = '✏️ Редактировать карточку';
+      document.getElementById('cardModalTitle').textContent = '✏️ Редактировать промт';
       document.getElementById('saveCardBtn').textContent = '💾 Сохранить изменения';
 
       document.getElementById('cardBeforeInput').value = '';
       document.getElementById('cardAfterInput').value = '';
+      document.getElementById('newPromptCatInput').value = '';
       document.getElementById('cardTitleInput').value = item.title;
       document.getElementById('cardPromptInput').value = item.prompt;
 
@@ -2075,13 +2403,17 @@
       }
 
       const afterPrev = document.getElementById('editAfterPreview');
+      const removeAfterBtn = document.getElementById('removeAfterBtn');
       if (item.image) {
         afterPrev.src = item.image;
         afterPrev.classList.remove('hidden');
+        removeAfterBtn.classList.remove('hidden');
       } else {
         afterPrev.classList.add('hidden');
+        removeAfterBtn.classList.add('hidden');
       }
 
+      renderModalCategoryChips();
       openModal('cardModal');
     }
 
@@ -2093,12 +2425,21 @@
       showToast('Фото ДО будет удалено при сохранении');
     }
 
+    function clearEditAfter() {
+      state.clearAfterFlag = true;
+      document.getElementById('editAfterPreview').classList.add('hidden');
+      document.getElementById('removeAfterBtn').classList.add('hidden');
+      document.getElementById('cardAfterInput').value = '';
+      showToast('Фото ПОСЛЕ будет удалено при сохранении');
+    }
+
     function getArchive() {
       return JSON.parse(localStorage.getItem('fs_visual_archive') || '[]');
     }
 
     function saveArchive(list) {
       localStorage.setItem('fs_visual_archive', JSON.stringify(list));
+      renderArchiveCategoryFilter();
       renderArchive();
     }
 
@@ -2168,13 +2509,18 @@
     async function saveCardFromModal() {
       const beforeFile = document.getElementById('cardBeforeInput').files[0];
       const afterFile = document.getElementById('cardAfterInput').files[0];
-      const title = document.getElementById('cardTitleInput').value.trim() || (state.studioMode === 'portrait' ? 'Портрет' : 'Карточка товара');
+      const title = document.getElementById('cardTitleInput').value.trim() || 'Промт без названия';
       const prompt = document.getElementById('cardPromptInput').value.trim();
+
+      if (!prompt) {
+        showToast('Впиши текст промпта!');
+        return;
+      }
 
       const archive = getArchive();
 
       if (state.editingCardId !== null) {
-        // Режим редактирования существующей карточки
+        // Режим редактирования существующей записи
         const idx = archive.findIndex(i => i.id === state.editingCardId);
         if (idx === -1) return;
 
@@ -2185,6 +2531,7 @@
 
         archive[idx].title = title;
         archive[idx].prompt = prompt;
+        archive[idx].categoryId = state.selectedModalCategory;
 
         if (newBeforeData) {
           archive[idx].beforeImage = newBeforeData;
@@ -2194,24 +2541,21 @@
 
         if (newAfterData) {
           archive[idx].image = newAfterData;
+        } else if (state.clearAfterFlag) {
+          archive[idx].image = null;
         }
 
         try {
           saveArchive(archive);
           closeModal('cardModal');
           state.editingCardId = null;
-          showToast('✅ Карточка обновлена!');
+          showToast('✅ Запись обновлена!');
         } catch (err) {
-          alert('Память браузера заполнена. Скачай резервную копию и удали старые карточки.');
+          showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
         }
 
       } else {
-        // Режим создания новой карточки
-        if (!afterFile) {
-          showToast('Загрузи хотя бы фото ПОСЛЕ!');
-          return;
-        }
-
+        // Режим создания новой записи (фото необязательны!)
         const [beforeData, afterData] = await Promise.all([
           compressImageFile(beforeFile),
           compressImageFile(afterFile)
@@ -2219,6 +2563,7 @@
 
         archive.unshift({
           id: Date.now(),
+          categoryId: state.selectedModalCategory,
           title: title,
           prompt: prompt,
           beforeImage: beforeData,
@@ -2231,61 +2576,110 @@
           closeModal('cardModal');
           document.getElementById('cardBeforeInput').value = '';
           document.getElementById('cardAfterInput').value = '';
-          showToast('🖼️ Сохранено в архив!');
+          showToast('🗂️ Промт сохранён в архив!');
         } catch (err) {
-          alert('Память браузера заполнена. Скачай резервную копию и удали старые карточки.');
+          showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
         }
       }
     }
 
+    function toggleExpandCardPrompt(id, event) {
+      if (event) event.stopPropagation();
+      state.expandedCards[id] = !state.expandedCards[id];
+      renderArchive();
+    }
+
+    function escapeHtmlSafe(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
     function renderArchive() {
-      const list = getArchive();
+      const allList = getArchive();
       const grid = document.getElementById('archiveGrid');
       const empty = document.getElementById('archiveEmpty');
       grid.innerHTML = '';
 
-      if (list.length === 0) {
+      const fallbackCatId = state.promptCategories[0]?.id || 'cat_products';
+      const filteredList = state.activeArchiveFilter === 'all'
+        ? allList
+        : allList.filter(item => (item.categoryId || fallbackCatId) === state.activeArchiveFilter);
+
+      if (filteredList.length === 0) {
         empty.classList.remove('hidden');
         return;
       }
       empty.classList.add('hidden');
 
-      list.forEach(item => {
+      filteredList.forEach(item => {
         const card = document.createElement('div');
         card.className = 'archive-card';
 
-        const badgesHtml = (item.tags || []).map(t => `<span class="badge">${t}</span>`).join('');
+        const catLabel = getPromptCategoryLabel(item.categoryId || fallbackCatId);
+        const catBadge = `<span class="badge badge-cat">${escapeHtmlSafe(catLabel)}</span>`;
+        const extraBadges = (item.tags || []).slice(0, 3).map(t => `<span class="badge">${escapeHtmlSafe(t)}</span>`).join('');
 
         let mediaHtml = '';
-        if (item.beforeImage) {
+        let inlineBadgesHtml = '';
+
+        if (item.beforeImage && item.image) {
           mediaHtml = `
-            <div class="ba-collage">
-              <div class="ba-half">
-                <img src="${item.beforeImage}" alt="До" />
-                <span class="ba-pill before">ДО</span>
+            <div class="card-img-wrap">
+              <div class="ba-collage">
+                <div class="ba-half">
+                  <img src="${item.beforeImage}" alt="До" />
+                  <span class="ba-pill before">ДО</span>
+                </div>
+                <div class="ba-half">
+                  <img src="${item.image}" alt="После" />
+                  <span class="ba-pill after">ПОСЛЕ</span>
+                </div>
               </div>
-              <div class="ba-half">
-                <img src="${item.image}" alt="После" />
-                <span class="ba-pill after">ПОСЛЕ</span>
-              </div>
+              <div class="card-badges">${catBadge}${extraBadges}</div>
+            </div>
+          `;
+        } else if (item.image || item.beforeImage) {
+          const singleSrc = item.image || item.beforeImage;
+          mediaHtml = `
+            <div class="card-img-wrap">
+              <img class="single-img" src="${singleSrc}" alt="${escapeHtmlSafe(item.title)}" />
+              <div class="card-badges">${catBadge}${extraBadges}</div>
             </div>
           `;
         } else {
-          mediaHtml = `<img class="single-img" src="${item.image}" alt="${item.title}" />`;
+          // Компактная карточка без фото
+          inlineBadgesHtml = `<div class="card-badges-inline">${catBadge}${extraBadges}</div>`;
         }
 
+        const isExpanded = Boolean(state.expandedCards[item.id]);
+        const isLongPrompt = (item.prompt || '').length > 110 || (item.prompt || '').split('\n').length > 2;
+        const isConfirmDelete = state.pendingDeleteId === item.id;
+
         card.innerHTML = `
-          <div class="card-img-wrap">
-            ${mediaHtml}
-            <div class="card-badges">${badgesHtml}</div>
-          </div>
+          ${mediaHtml}
           <div class="card-body">
-            <div class="card-title">${item.title}</div>
-            <div class="card-prompt-preview">${item.prompt}</div>
+            ${inlineBadgesHtml}
+            <div class="card-header-row">
+              <div class="card-title">${escapeHtmlSafe(item.title)}</div>
+            </div>
+            <div class="card-prompt-box" onclick="copyArchivePrompt(${item.id})" title="Нажми, чтобы скопировать промт">
+              <div class="card-prompt-preview ${isExpanded ? 'expanded' : ''}">${escapeHtmlSafe(item.prompt)}</div>
+              <div class="card-prompt-meta">
+                <span>👆 Нажми на текст, чтобы скопировать</span>
+                ${isLongPrompt ? `<button type="button" class="expand-link" onclick="toggleExpandCardPrompt(${item.id}, event)">${isExpanded ? '▲ Свернуть' : '▼ Развернуть'}</button>` : ''}
+              </div>
+            </div>
             <div class="card-footer">
-              <button class="btn-primary" onclick="copyArchivePrompt(${item.id})">📋 Промпт</button>
+              <button class="btn-primary" onclick="copyArchivePrompt(${item.id})">📋 Копировать</button>
               <button class="btn-secondary" onclick="openEditCardModal(${item.id})">✏️ Изменить</button>
-              <button class="btn-secondary" onclick="deleteArchiveItem(${item.id})">🗑️</button>
+              ${isConfirmDelete
+                ? `<button class="btn-secondary" style="background-color: var(--danger); color: #fff; border-color: var(--danger);" onclick="confirmDeleteArchiveItem(${item.id})">Точно удалить?</button>`
+                : `<button class="btn-secondary" onclick="requestDeleteArchiveItem(${item.id})">🗑️</button>`
+              }
             </div>
           </div>
         `;
@@ -2295,23 +2689,52 @@
 
     function copyArchivePrompt(id) {
       const item = getArchive().find(i => i.id === id);
-      if (item) {
-        navigator.clipboard.writeText(item.prompt);
-        showToast('📋 Промпт из архива скопирован!');
+      if (!item) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(item.prompt).then(() => {
+          showToast('📋 Промт скопирован!');
+        }).catch(() => {
+          fallbackCopyText(item.prompt);
+        });
+      } else {
+        fallbackCopyText(item.prompt);
       }
     }
 
-    function deleteArchiveItem(id) {
-      if (confirm('Удалить эту карточку из архива?')) {
-        const updated = getArchive().filter(i => i.id !== id);
-        saveArchive(updated);
-        showToast('Удалено');
-      }
+    function fallbackCopyText(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('📋 Промт скопирован!');
+    }
+
+    function requestDeleteArchiveItem(id) {
+      state.pendingDeleteId = id;
+      renderArchive();
+      setTimeout(() => {
+        if (state.pendingDeleteId === id) {
+          state.pendingDeleteId = null;
+          renderArchive();
+        }
+      }, 3500);
+    }
+
+    function confirmDeleteArchiveItem(id) {
+      state.pendingDeleteId = null;
+      const updated = getArchive().filter(i => i.id !== id);
+      saveArchive(updated);
+      showToast('🗑️ Запись удалена');
     }
 
     function exportBackup() {
       const data = {
         archive: getArchive(),
+        promptCategories: state.promptCategories,
         savedProducts: state.savedProducts,
         savedPortraits: state.savedPortraits
       };
@@ -2332,6 +2755,10 @@
       reader.onload = function(e) {
         try {
           const data = JSON.parse(e.target.result);
+          if (Array.isArray(data.promptCategories) && data.promptCategories.length > 0) {
+            state.promptCategories = data.promptCategories;
+            savePromptCategories();
+          }
           if (data.archive) saveArchive(data.archive);
           if (data.savedProducts) {
             state.savedProducts = data.savedProducts;
@@ -2342,14 +2769,14 @@
             localStorage.setItem('fs_saved_portraits', JSON.stringify(state.savedPortraits));
           }
           renderSavedSubjects();
+          renderArchiveCategoryFilter();
           showToast('📂 Архив успешно восстановлен!');
         } catch (err) {
-          alert('Ошибка при чтении файла резервной копии.');
+          showToast('⚠️ Ошибка при чтении файла резервной копии');
         }
       };
       reader.readAsText(file);
     }
-
 
     // PWA Install Prompt Handling
     let deferredPrompt = null;
