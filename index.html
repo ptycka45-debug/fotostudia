@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -524,6 +525,11 @@
 
     .copy-main-btn:active {
       transform: scale(0.99);
+    }
+
+    .copy-main-btn:disabled {
+      opacity: 0.6;
+      pointer-events: none;
     }
 
     /* Prompt Archive Styles */
@@ -2494,22 +2500,52 @@
           resolve(null);
           return;
         }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          const img = new Image();
-          img.onload = function() {
-            const canvas = document.createElement('canvas');
-            const maxW = 600;
-            const scale = Math.min(1, maxW / img.width);
-            canvas.width = img.width * scale;
-            canvas.height = img.height * scale;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL('image/jpeg', 0.78));
-          };
-          img.src = e.target.result;
+        let settled = false;
+        const done = (val) => {
+          if (!settled) {
+            settled = true;
+            resolve(val);
+          }
         };
-        reader.readAsDataURL(file);
+        const timer = setTimeout(() => done(null), 8000);
+
+        try {
+          const reader = new FileReader();
+          reader.onerror = () => {
+            clearTimeout(timer);
+            done(null);
+          };
+          reader.onload = function(e) {
+            const rawUrl = e.target.result;
+            const img = new Image();
+            img.onerror = () => {
+              clearTimeout(timer);
+              done(null);
+            };
+            img.onload = function() {
+              try {
+                const canvas = document.createElement('canvas');
+                const maxW = 480;
+                const scale = Math.min(1, maxW / (img.width || maxW));
+                canvas.width = Math.max(1, Math.round((img.width || maxW) * scale));
+                canvas.height = Math.max(1, Math.round((img.height || maxW) * scale));
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const compressed = canvas.toDataURL('image/jpeg', 0.72);
+                clearTimeout(timer);
+                done(compressed);
+              } catch (canvasErr) {
+                clearTimeout(timer);
+                done(rawUrl && rawUrl.length < 1200000 ? rawUrl : null);
+              }
+            };
+            img.src = rawUrl;
+          };
+          reader.readAsDataURL(file);
+        } catch (err) {
+          clearTimeout(timer);
+          done(null);
+        }
       });
     }
 
@@ -2524,69 +2560,92 @@
         return;
       }
 
-      const archive = getArchive();
+      const saveBtn = document.getElementById('saveCardBtn');
+      const prevBtnText = saveBtn.textContent;
+      if (beforeFile || afterFile) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '⏳ Обработка фото...';
+      }
 
-      if (state.editingCardId !== null) {
-        // Режим редактирования существующей записи
-        const idx = archive.findIndex(i => i.id === state.editingCardId);
-        if (idx === -1) return;
+      try {
+        const archive = getArchive();
 
-        const [newBeforeData, newAfterData] = await Promise.all([
-          compressImageFile(beforeFile),
-          compressImageFile(afterFile)
-        ]);
+        if (state.editingCardId !== null) {
+          // Режим редактирования существующей записи
+          const idx = archive.findIndex(i => i.id === state.editingCardId);
+          if (idx === -1) return;
 
-        archive[idx].title = title;
-        archive[idx].prompt = prompt;
-        archive[idx].categoryId = state.selectedModalCategory;
+          const [newBeforeData, newAfterData] = await Promise.all([
+            compressImageFile(beforeFile),
+            compressImageFile(afterFile)
+          ]);
 
-        if (newBeforeData) {
-          archive[idx].beforeImage = newBeforeData;
-        } else if (state.clearBeforeFlag) {
-          archive[idx].beforeImage = null;
+          if (beforeFile && !newBeforeData) {
+            showToast('⚠️ Не удалось прочитать фото ДО (формат не поддерживается)');
+          }
+          if (afterFile && !newAfterData) {
+            showToast('⚠️ Не удалось прочитать фото ПОСЛЕ (формат не поддерживается)');
+          }
+
+          archive[idx].title = title;
+          archive[idx].prompt = prompt;
+          archive[idx].categoryId = state.selectedModalCategory;
+
+          if (newBeforeData) {
+            archive[idx].beforeImage = newBeforeData;
+          } else if (state.clearBeforeFlag) {
+            archive[idx].beforeImage = null;
+          }
+
+          if (newAfterData) {
+            archive[idx].image = newAfterData;
+          } else if (state.clearAfterFlag) {
+            archive[idx].image = null;
+          }
+
+          try {
+            saveArchive(archive);
+            closeModal('cardModal');
+            state.editingCardId = null;
+            showToast('✅ Запись обновлена!');
+          } catch (err) {
+            showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
+          }
+
+        } else {
+          // Режим создания новой записи (фото необязательны!)
+          const [beforeData, afterData] = await Promise.all([
+            compressImageFile(beforeFile),
+            compressImageFile(afterFile)
+          ]);
+
+          if ((beforeFile && !beforeData) || (afterFile && !afterData)) {
+            showToast('⚠️ Одно из фото не прочиталось — сохраняю доступное');
+          }
+
+          archive.unshift({
+            id: Date.now(),
+            categoryId: state.selectedModalCategory,
+            title: title,
+            prompt: prompt,
+            beforeImage: beforeData,
+            image: afterData,
+            tags: getCurrentTags()
+          });
+
+          try {
+            saveArchive(archive);
+            closeModal('cardModal');
+            document.getElementById('cardBeforeInput').value = '';
+            document.getElementById('cardAfterInput').value = '';
+            showToast('🗂️ Промт сохранён в архив!');
+          } catch (err) {
+            showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
+          }
         }
-
-        if (newAfterData) {
-          archive[idx].image = newAfterData;
-        } else if (state.clearAfterFlag) {
-          archive[idx].image = null;
-        }
-
-        try {
-          saveArchive(archive);
-          closeModal('cardModal');
-          state.editingCardId = null;
-          showToast('✅ Запись обновлена!');
-        } catch (err) {
-          showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
-        }
-
-      } else {
-        // Режим создания новой записи (фото необязательны!)
-        const [beforeData, afterData] = await Promise.all([
-          compressImageFile(beforeFile),
-          compressImageFile(afterFile)
-        ]);
-
-        archive.unshift({
-          id: Date.now(),
-          categoryId: state.selectedModalCategory,
-          title: title,
-          prompt: prompt,
-          beforeImage: beforeData,
-          image: afterData,
-          tags: getCurrentTags()
-        });
-
-        try {
-          saveArchive(archive);
-          closeModal('cardModal');
-          document.getElementById('cardBeforeInput').value = '';
-          document.getElementById('cardAfterInput').value = '';
-          showToast('🗂️ Промт сохранён в архив!');
-        } catch (err) {
-          showToast('⚠️ Память браузера заполнена. Скачай резервную копию.');
-        }
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = prevBtnText;
       }
     }
 
@@ -2831,3 +2890,4 @@
   </script>
 </body>
 </html>
+```
